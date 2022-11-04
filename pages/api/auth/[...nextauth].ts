@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import NextAuth from 'next-auth'
-import Email from 'next-auth/providers/email'
+import EmailProvider from 'next-auth/providers/email'
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "../../../lib/prismadb"
 
@@ -12,8 +12,15 @@ export default function handler(
   NextAuth(req, res, {
     adapter: PrismaAdapter(prisma),
     providers: [
-      Email({
-        server: process.env.EMAIL_SERVER,
+      EmailProvider({
+        server: {
+          host: process.env.EMAIL_SERVER_HOST,
+          port: process.env.EMAIL_SERVER_PORT,
+          auth: {
+            user: process.env.EMAIL_SERVER_USER,
+            pass: process.env.EMAIL_SERVER_PASSWORD
+          }
+        },
         from: process.env.EMAIL_FROM,
       }),
     ],
