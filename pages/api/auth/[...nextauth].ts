@@ -5,11 +5,8 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "../../../lib/prismadb"
 
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  NextAuth(req, res, {
+export default async function authHandler(req: NextApiRequest, res: NextApiResponse) {
+  return await NextAuth(req, res, {
     adapter: PrismaAdapter(prisma),
     providers: [
       EmailProvider({
